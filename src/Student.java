@@ -1,10 +1,10 @@
-package FinalProject;
+//package FinalProject;
 
 public class Student
 {
     private String ID, firstName, lastName, program, academicLevel, asurite;
 
-    public Student(String ID, String firstName, String lastName, String academicLevel, String asurite)
+    public Student(String ID, String firstName, String lastName, String program, String academicLevel, String asurite)
     {
         this.ID = ID;
         this.firstName = firstName;
