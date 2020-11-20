@@ -10,7 +10,7 @@ public class Save {
      * @param students array of Student objects
      */
     public static void saveRoster(Student[] students) {
-        String fileName = "students.txt";
+        String fileName = "students.csv";
 
         try {
             FileWriter file = new FileWriter(fileName);
