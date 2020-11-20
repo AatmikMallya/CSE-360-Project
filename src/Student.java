@@ -2,13 +2,14 @@ package FinalProject;
 
 public class Student
 {
-    private String ID, firstName, lastName, academicLevel, asurite;
+    private String ID, firstName, lastName, program, academicLevel, asurite;
 
     public Student(String ID, String firstName, String lastName, String academicLevel, String asurite)
     {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.program = program;
         this.academicLevel = academicLevel;
         this.asurite = asurite;
     }
@@ -26,6 +27,11 @@ public class Student
     public String getLast()
     {
         return lastName;
+    }
+    
+    public String getProgram()
+    {
+        return program;
     }
 
     public String getLevel()
