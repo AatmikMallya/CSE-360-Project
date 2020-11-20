@@ -44,4 +44,14 @@ public class Student
         return asurite;
     }
 
+    // Returns all data members separated by commas
+    public String getCSV() {
+        return  this.getID() + "," +
+                this.getFirst() + "," +
+                this.getLast() + "," +
+                this.getProgram() + "," +
+                this.getLevel() + "," +
+                this.getAsurite() + "\n";
+    }
+
 }
