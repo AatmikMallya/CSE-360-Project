@@ -1,5 +1,3 @@
-//package FinalProject;
-
 public class Student
 {
     private String ID, firstName, lastName, program, academicLevel, asurite;
