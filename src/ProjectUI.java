@@ -16,8 +16,6 @@ import java.util.Scanner;
 public class ProjectUI extends JFrame implements ActionListener
 {
     private JTextArea output;
-    private JScrollPane scrollPane;
-    private JPanel contentPane;
     private RosterTable rTable;
     private Student[] roster;
 
@@ -49,8 +47,6 @@ public class ProjectUI extends JFrame implements ActionListener
         JMenuBar menuBar;
         JMenu menu;
         JMenuItem load, add, save, plot, about;
-        JRadioButtonMenuItem rbMenuItem;
-        JCheckBoxMenuItem cbMenuItem;
 
         menuBar = new JMenuBar();
 
@@ -80,21 +76,6 @@ public class ProjectUI extends JFrame implements ActionListener
 
         return menuBar;
 
-    }
-
-
-    public Container createContentPane() {
-        contentPane = new JPanel(new BorderLayout());
-        //contentPane.setOpaque(true);
-
-        output = new JTextArea(5,30);
-        output.setEditable(false);
-        output.setText("testing outputs");
-        scrollPane = new JScrollPane(output);
-
-        contentPane.add(scrollPane, BorderLayout.CENTER);
-
-        return contentPane;
     }
 
     public void actionPerformed(ActionEvent e)
@@ -183,7 +164,6 @@ public class ProjectUI extends JFrame implements ActionListener
             output.setText("Pick a file u fukr");
         }
 
-        repaint();
     }
 
     public String[][] readRoster(File rosterFile, int rows, int cols) throws Exception
