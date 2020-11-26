@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 public class Student
 {
     private String ID, firstName, lastName, program, academicLevel, asurite;
+    private ArrayList<Day> attendance;
 
     public Student(String ID, String firstName, String lastName, String program, String academicLevel, String asurite)
     {
@@ -10,6 +13,7 @@ public class Student
         this.program = program;
         this.academicLevel = academicLevel;
         this.asurite = asurite;
+        attendance = new ArrayList<Day>();
     }
 
     public String getID()
@@ -40,6 +44,36 @@ public class Student
     public String getAsurite()
     {
         return asurite;
+    }
+    
+    //Student Attendance methods
+    public void addAttendance(Day day)
+    {
+    	attendance.add(day);
+    }
+    public int getAttendance(String date)
+    {
+    	int minutes = 0;
+    	for (int x = 0; x < attendance.size(); x++)
+    	{
+    		if (attendance.get(x).getDate().equals(date))
+    		{
+    			minutes = attendance.get(x).getMinutes();
+    		}
+    	}
+    	return minutes;
+    }
+    public String getAttendanceDate(int index)
+    {
+    	return attendance.get(index).getDate();
+    }
+    public int getAttendanceCount()
+    {
+    	return attendance.size();
+    }
+    public void updateAttendance(int index,int min)
+    {
+    	attendance.get(index).setMinutes(min);
     }
 
     // Returns all data members separated by commas
