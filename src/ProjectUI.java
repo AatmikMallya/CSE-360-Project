@@ -1,4 +1,4 @@
-package FinalProject;
+//package FinalProject;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -34,6 +34,7 @@ public class ProjectUI extends JFrame implements ActionListener
 
 
         setSize(450, 260);
+        setLocationRelativeTo(null); //PUTS THE WINDOW IN THE CENTER OF THE SCREEN
         setVisible(true);
     }
 
@@ -95,7 +96,19 @@ public class ProjectUI extends JFrame implements ActionListener
                 break;
 
             case "Add Attendance":
-                output.setText("Add Attendance to be implemented");
+            	if (roster != null)
+            	{
+                	Attendance attendance = new Attendance();
+                	Scanner keyboard = new Scanner(System.in);
+                	System.out.println("Enter a date:");
+                	String date = keyboard.nextLine(); //............................get the date mm/dd
+                	attendance.loadAttendance(roster,date);
+                    output.setText("Add Attendance to be implemented");
+            	}
+            	else
+                {
+                    output.setText("Empty Roster");
+                }
                 break;
 
             case "Save":
@@ -174,7 +187,6 @@ public class ProjectUI extends JFrame implements ActionListener
         in.useDelimiter(",|\\n");
         for(int line = 0; line < rows; line++)
         {
-
             String ID = in.next();
             //System.out.println(ID);
             String firstName = in.next();
@@ -186,6 +198,8 @@ public class ProjectUI extends JFrame implements ActionListener
             String academicLevel = in.next();
             //System.out.println(academicLevel);
             String asurite = in.next();
+            if (asurite.charAt(asurite.length()-1) == '\r')
+            	asurite = asurite.substring(0,asurite.length()-1);
             //System.out.println(asurite);
 
             roster[line] = new Student(ID, firstName, lastName, program, academicLevel, asurite);
