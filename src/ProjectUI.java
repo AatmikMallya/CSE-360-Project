@@ -1,4 +1,15 @@
-//package FinalProject;
+/**
+ * This file contains the driver method for the application, which provides
+ * an interface for loading student data, displaying it to a plot, and saving
+ * it a file.
+ * @author Michaela Chen
+ * @author Daniel Hsu
+ * @author Nicholas Ngo
+ * @author Aatmik Mallya
+ * @author Dion (Marco) Pimentel
+ * @version 1.0
+ * @since 11/21/2020
+ */
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -20,7 +31,10 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 
-
+/**
+ * ProjectUI class creates an interface for the application and contains the
+ * main method
+ */
 public class ProjectUI extends JFrame implements ActionListener
 {
     private JTextArea output;
@@ -34,6 +48,10 @@ public class ProjectUI extends JFrame implements ActionListener
     private String[][] rTableData;
     private boolean hasRTable, hasTextOut, hasPlot;
 
+    /**
+     * Constructor for ProjectUI initializes interface with title
+     * @param title
+     */
     public ProjectUI(String title)
     {
 
@@ -68,11 +86,19 @@ public class ProjectUI extends JFrame implements ActionListener
         setVisible(true);
     }
 
+    /**
+     * Main function for application, creates a ProjectUI object
+     * @param args
+     */
     public static void main(String[] args)
     {
         ProjectUI UI = new ProjectUI("CSE360 Final Project");
     }
 
+    /**
+     * Creates a menu bar for the setJMenuBar method
+     * @return JMenuBar object
+     */
     public JMenuBar createMenuBar()
     {
         JMenuBar menuBar;
@@ -109,6 +135,10 @@ public class ProjectUI extends JFrame implements ActionListener
 
     }
 
+    /**
+     * Performs appropriate action based on user input
+     * @param e ActionEvent input event from user
+     */
     public void actionPerformed(ActionEvent e)
     {
         String button = e.getActionCommand();
@@ -260,6 +290,10 @@ public class ProjectUI extends JFrame implements ActionListener
         revalidate();
     }
 
+    /**
+     * Loads the CSV file containing student roster
+     * @throws Exception
+     */
     public void loadRoster() throws Exception
     {
         JFileChooser fileLoader = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -308,6 +342,15 @@ public class ProjectUI extends JFrame implements ActionListener
 
     }
 
+    /**
+     * Reads the data in the CSV file and stores in into Student array
+     * @param header first line of file
+     * @param rosterFile CSV file of the roster
+     * @param rows of the Student array
+     * @param cols of the Student array
+     * @return String[][] of student data
+     * @throws Exception
+     */
     public String[][] readRoster(String[] header, File rosterFile, int rows, int cols) throws Exception
     {
         roster = new Student[rows];

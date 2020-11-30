@@ -1,12 +1,22 @@
-//package FinalProject;
-
 import java.util.ArrayList;
 
+/**
+ * Student class defines the data structure used for storing student data
+ */
 public class Student
 {
     private String ID, firstName, lastName, program, academicLevel, asurite;
     private ArrayList<Day> attendance;
 
+    /**
+     * Constructor for Student sets data members to each of the parameters
+     * @param ID student ID, String
+     * @param firstName student's first name, String
+     * @param lastName student's last name, String
+     * @param program University program, String
+     * @param academicLevel either freshman, sophomore, junior, or senior, String
+     * @param asurite ASU username, String
+     */
     public Student(String ID, String firstName, String lastName, String program, String academicLevel, String asurite)
     {
         this.ID = ID;
@@ -18,37 +28,63 @@ public class Student
         attendance = new ArrayList<Day>();
     }
 
-    public String getID()
-    {
+    /**
+     * Getter for ID
+     * @return student ID, String
+     */
+    public String getID() {
         return ID;
     }
 
+    /**
+     * Getter for first name
+     * @return student's first name, String
+     */
     public String getFirst()
     {
         return firstName;
     }
 
+    /**
+     * Getter for last name
+     * @return student's last name, String
+     */
     public String getLast()
     {
         return lastName;
     }
-    
+
+    /**
+     * Getter for program
+     * @return student's program, String
+     */
     public String getProgram()
     {
         return program;
     }
 
+    /**
+     * Getter for academic level
+     * @return student's academic level, String
+     */
     public String getLevel()
     {
         return academicLevel;
     }
 
+    /**
+     * Getter for Asurite
+     * @return student's Asurite, String
+     */
     public String getAsurite()
     {
         return asurite;
     }
-    
-    //Student Attendance methods
+
+    /**
+     * Sets minutes to values in attendance object
+     * @param day Day object
+     */
     public void addAttendance(Day day)
     {
     	attendance.add(day);
@@ -78,7 +114,10 @@ public class Student
     	attendance.get(index).setMinutes(min);
     }
 
-    // Returns all data members separated by commas
+    /**
+     * Converts student's data members to CSV format
+     * @return comma separated values of student values
+     */
     public String getCSV() {
         return  this.getID() + "," +
                 this.getFirst() + "," +

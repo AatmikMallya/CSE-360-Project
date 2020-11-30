@@ -13,9 +13,18 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;  
 import org.jfree.data.xy.XYSeriesCollection; 
 
+/**
+ * Scatterplot class contains a method to create a dataset and initializes the plot
+ */
 public class ScatterPlot {
 	private static final long serialVersionUID = 6294689542092367723L;
 	private JFreeChart chart;
+
+	/**
+	 * Constructor for ScatterPlot class initializes dataset, chart, plot, and panel
+	 * @param title
+	 * @param roster
+	 */
 	public ScatterPlot(String title, Student[] roster) {  
 	    //super(title);
 	  
@@ -37,6 +46,12 @@ public class ScatterPlot {
 	    //ChartPanel panel = new ChartPanel(chart);
 	    //setContentPane(panel);
 	}
+
+	/**
+	 * Creates a set of data based on the input roster
+	 * @param roster
+	 * @return returns a set of XY points based on the student data
+	 */
 	private XYDataset createDataset(Student[] roster) {  
 	    XYSeriesCollection dataset = new XYSeriesCollection();  
 	    int attendanceLength = roster[0].getAttendanceCount();
