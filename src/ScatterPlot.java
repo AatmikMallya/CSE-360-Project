@@ -108,37 +108,4 @@ public class ScatterPlot {
 		return chart;
 	  }
 
-/*
-	public static void main(String[] args) {
-	    SwingUtilities.invokeLater(() -> {
-	    	Student[] roster = new Student[7];
-	    	roster[0] = new Student("1", "David", "Davidson", "CS", "Freshman", "DAVID"); //test stuff
-	    	roster[0].addAttendance(new Day("06/09", 75));
-	    	roster[0].addAttendance(new Day("07/09", 65));
-	    	roster[1] = new Student("1", "David", "Davidson", "CS", "Freshman", "DAVID");
-	    	roster[1].addAttendance(new Day("06/09", 25));
-	    	roster[1].addAttendance(new Day("07/09", 35));
-	    	roster[2] = new Student("1", "David", "Davidson", "CS", "Freshman", "DAVID");
-	    	roster[2].addAttendance(new Day("06/09", 35));
-	    	roster[2].addAttendance(new Day("07/09", 45));
-	    	roster[3] = new Student("1", "David", "Davidson", "CS", "Freshman", "DAVID");
-	    	roster[3].addAttendance(new Day("06/09", 45));
-	    	roster[3].addAttendance(new Day("07/09", 55));
-	    	roster[4] = new Student("1", "David", "Davidson", "CS", "Freshman", "DAVID");
-	    	roster[4].addAttendance(new Day("06/09", 55));
-	    	roster[4].addAttendance(new Day("07/09", 0));
-	    	roster[5] = new Student("1", "David", "Davidson", "CS", "Freshman", "DAVID");
-	    	roster[5].addAttendance(new Day("06/09", 65));
-	    	roster[5].addAttendance(new Day("07/09", 35));
-	    	roster[6] = new Student("1", "David", "Davidson", "CS", "Freshman", "DAVID");
-	    	roster[6].addAttendance(new Day("06/09", 75));
-	    	roster[6].addAttendance(new Day("07/09", 75));
-	        ScatterPlot example = new ScatterPlot("Student Attendance", roster);
-	        example.setSize(800, 400);
-	        example.setLocationRelativeTo(null);
-	        example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	        example.setVisible(true);
-	    });
-	  }
-*/
 }

@@ -9,6 +9,7 @@ import org.jfree.data.xy.XYDataset;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.TableColumn;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,9 @@ public class ProjectUI extends JFrame implements ActionListener
     private RosterTable rTable;
     private Student[] roster;
     private JFreeChart chart;
+    private int tableCols;
+    private String[] rTableHeader;
+    private String[][] rTableData;
     private boolean hasRTable, hasTextOut, hasPlot;
 
     public ProjectUI(String title)
@@ -137,11 +141,46 @@ public class ProjectUI extends JFrame implements ActionListener
                         }
                     }
                     else
+                    {
                         System.out.println("Date not selected");
+                    }
+
+                    panel.remove(rTable);
+
+                    tableCols++;
+                    String[] temp = new String[tableCols];
+                    String[][] temp2D = new String[roster.length + 1][tableCols];
+
+                    System.arraycopy(rTableHeader, 0, temp, 0, temp.length - 1);
+                    temp[temp.length - 1] = date;
+                    rTableHeader = temp;
+
+                    for(int pos = 0; pos < roster.length + 1; pos++)
+                    {
+                        if(pos == 0)
+                        {
+                            System.arraycopy(rTableData[pos], 0, temp2D[pos], 0, tableCols - 1);
+                            temp2D[pos][tableCols - 1] = date;
+                        }
+                        else
+                        {
+                            System.arraycopy(rTableData[pos],0, temp2D[pos], 0 , tableCols - 1);
+                            temp2D[pos][tableCols - 1] = Integer.toString(roster[pos-1].getAttendance(date));
+                        }
+
+                    }
+
+                    rTableHeader = temp;
+                    rTableData = temp2D;
+
+                    rTable = new RosterTable(roster, rTableData, rTableHeader);
+
+                    panel.add(rTable);
+
                 }
                 else
                 {
-                    output.setText("Empty Roster");
+                    output.setText("Error: Empty Roster");
                 }
                 break;
 
@@ -155,11 +194,8 @@ public class ProjectUI extends JFrame implements ActionListener
                 {
                     Save save = new Save();
                     String filename = save.saveRoster(roster);
-                    if(!hasTextOut) {
-                        //remove(rTable);
-                        //add(output);
-                        //panel.remove(rTable);
-                        //panel.remove(rTable);
+                    if(!hasTextOut)
+                    {
                         panel.add(output);
                         hasTextOut = true;
                     }
@@ -180,6 +216,8 @@ public class ProjectUI extends JFrame implements ActionListener
                     chartPanel = new ChartPanel(chart);
                     setContentPane(chartPanel);
                     hasPlot = true;
+
+
 
                 }
                 else
@@ -236,13 +274,15 @@ public class ProjectUI extends JFrame implements ActionListener
                 Path path = Paths.get(rosterFile.getAbsolutePath());
                 int lines = (int) Files.lines(path).count();
 
-                String[] rTableHeader = {"ID", "First Name", "Last Name", "Program", "Level", "ASURITE"};
-                String[][] tableData = readRoster(rosterFile, lines, 6);
+                String[] tableHeader = {"ID", "First Name", "Last Name", "Program", "Level", "ASURITE"};
+                String[][] tableData = readRoster(tableHeader, rosterFile, lines, 6);
 
-                rTable = new RosterTable(roster, tableData, rTableHeader);
+                rTable = new RosterTable(roster, tableData, tableHeader);
 
-                //remove(output);
-                //add(rTable);
+                rTableHeader = tableHeader;
+                rTableData = tableData;
+                tableCols = tableHeader.length;
+
                 panel.remove(output);
                 panel.add(rTable);
 
@@ -268,37 +308,39 @@ public class ProjectUI extends JFrame implements ActionListener
 
     }
 
-    public String[][] readRoster(File rosterFile, int rows, int cols) throws Exception
+    public String[][] readRoster(String[] header, File rosterFile, int rows, int cols) throws Exception
     {
         roster = new Student[rows];
-        String[][] studentData = new String[rows][cols];
+        String[][] studentData = new String[rows + 1][cols];
         Scanner in = new Scanner(rosterFile);
         in.useDelimiter(",|\\n");
-        for(int line = 0; line < rows; line++)
+        for(int line = 0; line < rows + 1; line++)
         {
-            String ID = in.next();
-            //System.out.println(ID);
-            String firstName = in.next();
-            //System.out.println(firstName);
-            String lastName = in.next();
-           // System.out.println(lastName);
-            String program = in.next();
-            //System.out.println(program);
-            String academicLevel = in.next();
-            //System.out.println(academicLevel);
-            String asurite = in.next();
-            if (asurite.charAt(asurite.length()-1) == '\r')
-            	asurite = asurite.substring(0,asurite.length()-1);
-            //System.out.println(asurite);
+            if(line == 0)
+            {
+                studentData[line] = header;
+            }
+            else
+            {
+                String ID = in.next();
+                String firstName = in.next();
+                String lastName = in.next();
+                String program = in.next();
+                String academicLevel = in.next();
+                String asurite = in.next();
+                if (asurite.charAt(asurite.length()-1) == '\r')
+                    asurite = asurite.substring(0,asurite.length()-1);
 
-            roster[line] = new Student(ID, firstName, lastName, program, academicLevel, asurite);
-            //System.out.println("new student added");
-            studentData[line][0] = ID;
-            studentData[line][1] = firstName;
-            studentData[line][2] = lastName;
-            studentData[line][3] = program;
-            studentData[line][4] = academicLevel;
-            studentData[line][5] = asurite;
+                roster[line-1] = new Student(ID, firstName, lastName, program, academicLevel, asurite);
+
+                studentData[line][0] = ID;
+                studentData[line][1] = firstName;
+                studentData[line][2] = lastName;
+                studentData[line][3] = program;
+                studentData[line][4] = academicLevel;
+                studentData[line][5] = asurite;
+            }
+
         }
         return studentData;
     }
