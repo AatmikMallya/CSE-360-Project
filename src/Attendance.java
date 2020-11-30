@@ -111,6 +111,8 @@ public class Attendance extends JFrame
 					pane.setMessage(message);
 					JDialog dialog = pane.createDialog(null);
 					dialog.setVisible(true);
+					
+					return true;
 				}
 				// For when Scanner fails
 				catch (FileNotFoundException e) {
