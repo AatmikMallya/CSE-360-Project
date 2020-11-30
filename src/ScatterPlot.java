@@ -118,6 +118,10 @@ public class ScatterPlot {
 	    return dataset;  
 	  }
 
+	  /**
+	   * Getter for chart
+	   * @return current JFreeChart
+	   */
 	  public JFreeChart getChart()
 	  {
 		return chart;
