@@ -167,7 +167,7 @@ public class ProjectUI extends JFrame implements ActionListener
                     {
                         if (!attendance.loadAttendance(roster,date))
                         {
-                            System.out.println("Attendance File not selected");
+                            System.out.println("Attendance File not uploaded");
                         }
                     }
                     else
