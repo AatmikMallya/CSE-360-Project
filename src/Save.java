@@ -1,3 +1,5 @@
+package FinalProject;
+
 import java.io.IOException;
 import java.io.FileWriter;
 
@@ -9,7 +11,7 @@ public class Save {
      * Writes data from roster to a csv file
      * @param students array of Student objects
      */
-    public static void saveRoster(Student[] students) {
+    public static String saveRoster(Student[] students) {
         String fileName = "students.csv";
 
         try {
@@ -23,22 +25,13 @@ public class Save {
             }
             file.close();
 
-            System.out.println("Successfully wrote to " + fileName + ".");
+
         }
         catch (IOException e) {
             System.out.println("An error occurred while writing to " + fileName + ".");
             e.printStackTrace();
         }
+        return fileName;
     }
 
-    // TEMPORARY - just for testing saveRoster function
-    public static void main(String[] args) {
-        Student[] students = {
-                new Student("1","sam","smith","cs","freshman","1234"),
-                new Student("2","joe","roberts","history","soph","567"),
-                new Student("3","anna","ssss","math","junior","89"),
-        };
-
-        saveRoster(students);
-    }
 }

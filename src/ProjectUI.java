@@ -1,11 +1,17 @@
-//package FinalProject;
+package FinalProject;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.xy.XYDataset;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Container;
-import java.awt.BorderLayout;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,27 +19,47 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 
+
 public class ProjectUI extends JFrame implements ActionListener
 {
     private JTextArea output;
+    private JPanel panel;
+    private ChartPanel chartPanel;
     private RosterTable rTable;
     private Student[] roster;
+    private JFreeChart chart;
+    private boolean hasRTable, hasTextOut, hasPlot;
 
     public ProjectUI(String title)
     {
+
         super(title);
+
+        //setLayout(new BoxLayout(BoxLayout.Y_AXIS));
+        //setPreferredSize(new Dimension(500, 300));
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        panel = new JPanel();
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        setPreferredSize(new Dimension(500, 1000));
+
+        setContentPane(panel);
+        //add(panel);
 
         setJMenuBar(createMenuBar());
-        //setContentPane(createContentPane());
-        output = new JTextArea(5,30);
+
+        output = new JTextArea(2,10);
         output.setEditable(false);
         output.setText("testing outputs");
-        add(output);
+        panel.add(output);
 
 
-        setSize(450, 260);
+        hasRTable = false;
+        hasTextOut = true;
+
+        setSize(500, 300);
         setLocationRelativeTo(null); //PUTS THE WINDOW IN THE CENTER OF THE SCREEN
         setVisible(true);
     }
@@ -96,26 +122,22 @@ public class ProjectUI extends JFrame implements ActionListener
                 break;
 
             case "Add Attendance":
-            	if (roster != null)
-            	{
-                	Attendance attendance = new Attendance();
-                	Scanner keyboard = new Scanner(System.in);
-                	System.out.println("Enter a date:");
-                	String date = keyboard.nextLine(); //............................get the date mm/dd
-                	attendance.loadAttendance(roster,date);
-                    output.setText("Add Attendance to be implemented");
-            	}
-            	else
-                {
-                    output.setText("Empty Roster");
-                }
-                break;
-
-            case "Save":
                 if (roster != null)
                 {
-                    Save save = new Save();
-                    save.saveRoster(roster);
+                    Attendance attendance = new Attendance();
+                    DateSelector dateSelector = new DateSelector();
+
+                    dateSelector.selectDate();
+                    String date = dateSelector.getDate();
+                    if (date != null)
+                    {
+                        if (!attendance.loadAttendance(roster,date))
+                        {
+                            System.out.println("Attendance File not selected");
+                        }
+                    }
+                    else
+                        System.out.println("Date not selected");
                 }
                 else
                 {
@@ -123,11 +145,68 @@ public class ProjectUI extends JFrame implements ActionListener
                 }
                 break;
 
+            case "Save":
+                if(hasPlot)
+                {
+                    hasPlot = false;
+                    setContentPane(panel);
+                }
+                if (roster != null)
+                {
+                    Save save = new Save();
+                    String filename = save.saveRoster(roster);
+                    if(!hasTextOut) {
+                        //remove(rTable);
+                        //add(output);
+                        //panel.remove(rTable);
+                        //panel.remove(rTable);
+                        panel.add(output);
+                        hasTextOut = true;
+                    }
+                    output.setText("Roster successfully saved to " + filename);
+                }
+                else
+                {
+                    output.setText("Error: Empty Roster");
+                }
+                break;
+
             case "Plot Data":
-                output.setText("Plot Data to be implemented");
+                if(rTable != null)
+                {
+                    ScatterPlot plot = new ScatterPlot("Student Attendance", roster);
+                    chart = plot.getChart();
+
+                    chartPanel = new ChartPanel(chart);
+                    setContentPane(chartPanel);
+                    hasPlot = true;
+
+                }
+                else
+                {
+                    output.setText("Error: Empty Roster");
+                }
                 break;
 
             case "About":
+                if(hasPlot)
+                {
+                    hasPlot = false;
+                    setContentPane(panel);
+                }
+                if(hasRTable)
+                {
+                    //remove(rTable);
+                    panel.remove(rTable);
+                    hasRTable = false;
+                    if(!hasTextOut)
+                    {
+                        //add(output);
+                        panel.add(output);
+                        hasTextOut = true;
+                    }
+                }
+
                 output.setText("Team Members:" + "\n" +
                                 "Aatmik Mallya" + "\n" +
                                 "Daniel Hsu" + "\n" +
@@ -140,7 +219,7 @@ public class ProjectUI extends JFrame implements ActionListener
                 output.setText("how did you add another button lol");
                 break;
         }
-        repaint();
+        revalidate();
     }
 
     public void loadRoster() throws Exception
@@ -161,20 +240,30 @@ public class ProjectUI extends JFrame implements ActionListener
                 String[][] tableData = readRoster(rosterFile, lines, 6);
 
                 rTable = new RosterTable(roster, tableData, rTableHeader);
-                //scrollPane.remove(output);
-                //scrollPane.add(rTable);
-                remove(output);
-                add(rTable);
 
+                //remove(output);
+                //add(rTable);
+                panel.remove(output);
+                panel.add(rTable);
+
+                hasRTable = true;
+                hasTextOut = false;
+
+            }
+            else if(hasRTable && hasTextOut)
+            {
+                output.setText("Error: not a csv file");
             }
             else
             {
-                output.setText("not a csv file");
+                panel.add(output);
+                output.setText("Error: not a csv file");
+                hasTextOut = true;
             }
         }
-        else
+        else if (rTable == null)
         {
-            output.setText("Pick a file u fukr");
+            output.setText("Error: No file chosen");
         }
 
     }
@@ -203,7 +292,7 @@ public class ProjectUI extends JFrame implements ActionListener
             //System.out.println(asurite);
 
             roster[line] = new Student(ID, firstName, lastName, program, academicLevel, asurite);
-            System.out.println("new student added");
+            //System.out.println("new student added");
             studentData[line][0] = ID;
             studentData[line][1] = firstName;
             studentData[line][2] = lastName;

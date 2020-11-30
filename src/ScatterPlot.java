@@ -1,4 +1,6 @@
-import java.awt.Color;  
+package FinalProject;
+
+import java.awt.Color;
 import javax.swing.JFrame;  
 import javax.swing.SwingUtilities;  
 import javax.swing.WindowConstants;  
@@ -11,29 +13,29 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;  
 import org.jfree.data.xy.XYSeriesCollection; 
 
-public class ScatterPlot extends JFrame {
+public class ScatterPlot {
 	private static final long serialVersionUID = 6294689542092367723L;
-	
+	private JFreeChart chart;
 	public ScatterPlot(String title, Student[] roster) {  
-	    super(title);  
+	    //super(title);
 	  
-	    // Create dataset  
-	    XYDataset dataset = createDataset(roster);  
-	  
-	    // Create chart  
-	    JFreeChart chart = ChartFactory.createScatterPlot(  
-	        title,   
+	    // Create dataset
+	    XYDataset dataset = createDataset(roster);
+
+	    // Create chart
+	    chart = ChartFactory.createScatterPlot(
+	        title,
 	        "X-Axis", "Y-Axis", dataset,
-	        PlotOrientation.VERTICAL, true, true, false);  
-	  
-	      
-	    //Changes background color  
-	    XYPlot plot = (XYPlot)chart.getPlot();  
-	    plot.setBackgroundPaint(new Color(255,228,196));  
+	        PlotOrientation.VERTICAL, true, true, false);
+
+
+	    //Changes background color
+	    XYPlot plot = (XYPlot)chart.getPlot();
+	    plot.setBackgroundPaint(new Color(255,228,196));
 	    
 	 // Create Panel  
-	    ChartPanel panel = new ChartPanel(chart);  
-	    setContentPane(panel);  
+	    //ChartPanel panel = new ChartPanel(chart);
+	    //setContentPane(panel);
 	}
 	private XYDataset createDataset(Student[] roster) {  
 	    XYSeriesCollection dataset = new XYSeriesCollection();  
@@ -99,7 +101,14 @@ public class ScatterPlot extends JFrame {
 	       
 	  
 	    return dataset;  
-	  }  
+	  }
+
+	  public JFreeChart getChart()
+	  {
+		return chart;
+	  }
+
+/*
 	public static void main(String[] args) {
 	    SwingUtilities.invokeLater(() -> {
 	    	Student[] roster = new Student[7];
@@ -131,5 +140,5 @@ public class ScatterPlot extends JFrame {
 	        example.setVisible(true);
 	    });
 	  }
-
+*/
 }

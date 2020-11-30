@@ -1,4 +1,4 @@
-
+package FinalProject;
 
 import javax.swing.*;
 import java.io.File;

@@ -1,4 +1,4 @@
-
+package FinalProject;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,12 +55,25 @@ public class DateSelector extends JDialog implements ActionListener
 		if (e.getSource() == button)
 		{
 			//Get information from calendar
-			Date calendar = (Date) datePicker.getModel().getValue();
-			int month = calendar.getMonth()+1;
-			int day = calendar.getDate();
-			date = month + "/" + day;
-			dispose();
+			if (datePicker.getModel().getValue() != null)
+			{
+				Date calendar = (Date) datePicker.getModel().getValue();
+				int month = calendar.getMonth()+1;
+				int day = calendar.getDate();
+				date = month + "/" + day;
+				dispose();
+			}
+			else
+			{
+				dispose();
+				JOptionPane pane = new JOptionPane();
+				pane.setMessage("Error: not a .csv file");
+				JDialog dialog = pane.createDialog(null);
+				dialog.setVisible(true);
+			}
 		}
+		else
+			System.out.println("Error: no input");
 	}
 	
 	public String getDate()
