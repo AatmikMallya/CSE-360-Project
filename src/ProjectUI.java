@@ -74,7 +74,7 @@ public class ProjectUI extends JFrame implements ActionListener
 
         output = new JTextArea(2,10);
         output.setEditable(false);
-        output.setText("testing outputs");
+        output.setText(mull);
         panel.add(output);
 
 
