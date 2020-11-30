@@ -111,22 +111,7 @@ public class Attendance extends JFrame
 					pane.setMessage(message);
 					JDialog dialog = pane.createDialog(null);
 					dialog.setVisible(true);
-
-					// Check inputs
-					System.out.println('\n'+ "Finished everything. Check Inputs.");
-					System.out.println("roster length: " + roster.length + '\n');
-					for (int x = 0; x < roster.length ; x++)
-					{
-						Student student = roster[x];
-						System.out.println("Student asurite: " + student.getAsurite());
-						System.out.println("attendance count: " + student.getAttendanceCount());
-						for (int y = 0; y < student.getAttendanceCount(); y++)
-						{
-							System.out.println("Date: " + student.getAttendanceDate(y));
-							System.out.println("Minutes: " + student.getAttendance(student.getAttendanceDate(y)));
-							System.out.println();
-						}
-					}
+					
 					return true;
 				}
 				// For when Scanner fails
