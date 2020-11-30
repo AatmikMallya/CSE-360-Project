@@ -1,3 +1,5 @@
+
+
 import java.util.ArrayList;
 
 /**
@@ -119,12 +121,25 @@ public class Student
      * @return comma separated values of student values
      */
     public String getCSV() {
-        return  this.getID() + "," +
+
+        String output = this.getID() + "," +
                 this.getFirst() + "," +
                 this.getLast() + "," +
                 this.getProgram() + "," +
                 this.getLevel() + "," +
-                this.getAsurite() + "\n";
+                this.getAsurite();
+
+        if(getAttendanceCount() != 0)
+        {
+            for(int pos = 0; pos < getAttendanceCount(); pos++)
+            {
+                output = output + "," + getAttendance(getAttendanceDate(pos));
+            }
+        }
+
+        output = output + "\n";
+
+        return output;
     }
 
 }

@@ -1,4 +1,4 @@
-//package FinalProject;
+
 
 import java.awt.Color;
 import javax.swing.JFrame;  
@@ -8,8 +8,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;  
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;  
-import org.jfree.data.xy.XYDataset;  
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;  
 import org.jfree.data.xy.XYSeriesCollection; 
 
@@ -29,12 +29,13 @@ public class ScatterPlot {
 	    //super(title);
 	  
 	    // Create dataset
-	    XYDataset dataset = createDataset(roster);
+		XYDataset dataset = null;
+	    dataset = createDataset(roster);
 
 	    // Create chart
 	    chart = ChartFactory.createScatterPlot(
 	        title,
-	        "X-Axis", "Y-Axis", dataset,
+	        "Hours", "Student Count", dataset,
 	        PlotOrientation.VERTICAL, true, true, false);
 
 

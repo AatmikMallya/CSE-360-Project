@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.io.FileWriter;
 
@@ -10,7 +11,7 @@ public class Save
      * Writes data from roster to a csv file
      * @param students array of Student objects
      */
-    public static void saveRoster(Student[] students)
+    public static String saveRoster(Student[] students)
     {
         String fileName = "students.csv";
 
@@ -18,7 +19,18 @@ public class Save
         {
             FileWriter file = new FileWriter(fileName);
             // Write table headers first
-            file.write("ID,First Name,Last Name,Program,Academic Level,ASURITE\n");
+            String header = "ID,First Name,Last Name,Program,Academic Level,ASURITE";
+
+            if(students[0].getAttendanceCount() != 0)
+            {
+                for(int pos = 0; pos < students[0].getAttendanceCount(); pos++)
+                {
+                    header = header + "," + students[0].getAttendanceDate(pos);
+                }
+            }
+            header = header + "\n";
+
+            file.write(header);
 
             // Write all data from students
             for (int iterator = 0; iterator < students.length; iterator++)
@@ -27,12 +39,13 @@ public class Save
             }
             file.close();
 
-            System.out.println("Successfully wrote to " + fileName + ".");
+
         }
         catch (IOException e)
         {
             System.out.println("An error occurred while writing to " + fileName + ".");
             e.printStackTrace();
         }
+        return fileName;
     }
 }

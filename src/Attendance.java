@@ -1,4 +1,4 @@
-//package FinalProject;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,13 +36,28 @@ public class Attendance extends JFrame
 				Scanner scanner;
 				try
 				{
-					// Set every student in the roster's minutes as "0" before looking at attendance
-					for (int x = 0; x < roster.length; x++)
+
+					Student studentCheck = roster[0];
+					int existingDate;
+					for(existingDate = 0; existingDate < studentCheck.getAttendanceCount(); existingDate++)
 					{
-						Day day = new Day(date, 0);
-						Student student = roster[x];
-						student.addAttendance(day);
+						if(date.equals(studentCheck.getAttendanceDate(existingDate)))
+						{
+							break;
+						}
 					}
+
+					if(existingDate >= studentCheck.getAttendanceCount())
+					{
+						// Set every student in the roster's minutes as "0" before looking at attendance
+						for (int x = 0; x < roster.length; x++)
+						{
+							Day day = new Day(date, 0);
+							Student student = roster[x];
+							student.addAttendance(day);
+						}
+					}
+
 
 					// Input data from file
 					scanner = new Scanner(file);
@@ -131,7 +146,10 @@ public class Attendance extends JFrame
 		}
 		else
 		{
-			System.out.println("Error: no file chosen");
+			JOptionPane pane = new JOptionPane();
+			pane.setMessage("Error: no file chosen");
+			JDialog dialog = pane.createDialog(null);
+			dialog.setVisible(true);
 			return false;
 		}
 

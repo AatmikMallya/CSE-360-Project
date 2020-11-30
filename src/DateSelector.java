@@ -1,4 +1,4 @@
-//package FinalProject;
+
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -81,13 +81,20 @@ public class DateSelector extends JDialog implements ActionListener
 			{
 				dispose();
 				JOptionPane pane = new JOptionPane();
-				pane.setMessage("Error: not a .csv file");
+				pane.setMessage("Error: no date chosen");
 				JDialog dialog = pane.createDialog(null);
 				dialog.setVisible(true);
 			}
 		}
 		else
-			System.out.println("Error: no input");
+		{
+			dispose();
+			JOptionPane pane = new JOptionPane();
+			pane.setMessage("Error: no input");
+			JDialog dialog = pane.createDialog(null);
+			dialog.setVisible(true);
+		}
+
 	}
 
 	/**

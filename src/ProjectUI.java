@@ -1,3 +1,4 @@
+
 /**
  * This file contains the driver method for the application, which provides
  * an interface for loading student data, displaying it to a plot, and saving
@@ -74,7 +75,7 @@ public class ProjectUI extends JFrame implements ActionListener
 
         output = new JTextArea(2,10);
         output.setEditable(false);
-        output.setText(mull);
+        output.setText(null);
         panel.add(output);
 
 
@@ -145,19 +146,41 @@ public class ProjectUI extends JFrame implements ActionListener
         switch(button)
         {
             case "Load a Roster":
+                if(hasPlot)
+                {
+                    setContentPane(panel);
+                    hasPlot = false;
+                }
+                if(hasRTable)
+                {
+                    panel.remove(rTable);
+                    hasRTable = false;
+                }
                 try
                 {
                     loadRoster();
                 }
                 catch (Exception ex)
                 {
-                    System.out.println("An Error Has Occurred.");
+                    if(!hasTextOut)
+                    {
+                        panel.add(output);
+                        hasTextOut = true;
+                    }
+                    output.setText("An Error Has Occurred.");
                 }
                 break;
 
             case "Add Attendance":
+                if(hasPlot)
+                {
+                    setContentPane(panel);
+                    hasPlot = false;
+                }
                 if (roster != null)
                 {
+
+
                     Attendance attendance = new Attendance();
                     DateSelector dateSelector = new DateSelector();
 
@@ -167,45 +190,85 @@ public class ProjectUI extends JFrame implements ActionListener
                     {
                         if (!attendance.loadAttendance(roster,date))
                         {
-                            System.out.println("Attendance File not uploaded");
+                            if(!hasTextOut)
+                            {
+                                panel.add(output);
+                                hasTextOut = true;
+                            }
+                            output.setText("Attendance File not uploaded");
+                        }
+                        else
+                        {
+                            panel.remove(rTable);
+
+                            int datePos;
+
+                            for(datePos = 0; datePos < tableCols; datePos++)
+                            {
+                                if(date.equals(rTableHeader[datePos]))
+                                {
+                                    break;
+                                }
+                            }
+
+                            if(datePos < tableCols)
+                            {
+                                for(int pos = 1; pos < roster.length + 1; pos++)
+                                {
+                                    rTableData[pos][datePos] = Integer.toString(roster[pos-1].getAttendance(date));
+                                }
+                            }
+                            else
+                            {
+                                tableCols++;
+                                String[] temp = new String[tableCols];
+                                String[][] temp2D = new String[roster.length + 1][tableCols];
+
+                                System.arraycopy(rTableHeader, 0, temp, 0, temp.length - 1);
+                                temp[temp.length - 1] = date;
+                                rTableHeader = temp;
+
+                                for(int pos = 0; pos < roster.length + 1; pos++)
+                                {
+                                    if(pos == 0)
+                                    {
+                                        System.arraycopy(rTableData[pos], 0, temp2D[pos], 0, tableCols - 1);
+                                        temp2D[pos][tableCols - 1] = date;
+                                    }
+                                    else
+                                    {
+                                        System.arraycopy(rTableData[pos],0, temp2D[pos], 0 , tableCols - 1);
+                                        temp2D[pos][tableCols - 1] = Integer.toString(roster[pos-1].getAttendance(date));
+                                    }
+
+                                }
+
+                                rTableHeader = temp;
+                                rTableData = temp2D;
+                            }
+
+                            rTable = new RosterTable(roster, rTableData, rTableHeader);
+
+                            if(hasTextOut)
+                            {
+                                panel.remove(output);
+                                hasTextOut = false;
+                            }
+
+                            panel.add(rTable);
                         }
                     }
                     else
                     {
-                        System.out.println("Date not selected");
+                        if(!hasTextOut)
+                        {
+                            panel.add(output);
+                            hasTextOut = true;
+                        }
+                        output.setText("Error: Closed out of datepicker");
                     }
 
-                    panel.remove(rTable);
 
-                    tableCols++;
-                    String[] temp = new String[tableCols];
-                    String[][] temp2D = new String[roster.length + 1][tableCols];
-
-                    System.arraycopy(rTableHeader, 0, temp, 0, temp.length - 1);
-                    temp[temp.length - 1] = date;
-                    rTableHeader = temp;
-
-                    for(int pos = 0; pos < roster.length + 1; pos++)
-                    {
-                        if(pos == 0)
-                        {
-                            System.arraycopy(rTableData[pos], 0, temp2D[pos], 0, tableCols - 1);
-                            temp2D[pos][tableCols - 1] = date;
-                        }
-                        else
-                        {
-                            System.arraycopy(rTableData[pos],0, temp2D[pos], 0 , tableCols - 1);
-                            temp2D[pos][tableCols - 1] = Integer.toString(roster[pos-1].getAttendance(date));
-                        }
-
-                    }
-
-                    rTableHeader = temp;
-                    rTableData = temp2D;
-
-                    rTable = new RosterTable(roster, rTableData, rTableHeader);
-
-                    panel.add(rTable);
 
                 }
                 else
@@ -247,8 +310,6 @@ public class ProjectUI extends JFrame implements ActionListener
                     setContentPane(chartPanel);
                     hasPlot = true;
 
-
-
                 }
                 else
                 {
@@ -284,7 +345,22 @@ public class ProjectUI extends JFrame implements ActionListener
                 break;
 
             default:
-                output.setText("how did you add another button lol");
+                if(hasPlot)
+                {
+                    setContentPane(panel);
+                    hasPlot = false;
+                }
+                if(hasRTable)
+                {
+                    panel.remove(rTable);
+                    hasRTable = false;
+                }
+                if(!hasTextOut)
+                {
+                    panel.add(output);
+                    hasTextOut = true;
+                }
+                output.setText("how did you add another button");
                 break;
         }
         revalidate();
@@ -316,6 +392,7 @@ public class ProjectUI extends JFrame implements ActionListener
                 rTableHeader = tableHeader;
                 rTableData = tableData;
                 tableCols = tableHeader.length;
+
 
                 panel.remove(output);
                 panel.add(rTable);
@@ -357,7 +434,8 @@ public class ProjectUI extends JFrame implements ActionListener
         String[][] studentData = new String[rows + 1][cols];
         Scanner in = new Scanner(rosterFile);
         in.useDelimiter(",|\\n");
-        for(int line = 0; line < rows + 1; line++)
+        int loopBound = rows + 1;
+        for(int line = 0; line < loopBound; line++)
         {
             if(line == 0)
             {
@@ -371,17 +449,26 @@ public class ProjectUI extends JFrame implements ActionListener
                 String program = in.next();
                 String academicLevel = in.next();
                 String asurite = in.next();
-                if (asurite.charAt(asurite.length()-1) == '\r')
-                    asurite = asurite.substring(0,asurite.length()-1);
+                if(asurite == "" || asurite == null)
+                {
+                    line--;
+                    loopBound--;
+                }
+                else
+                {
+                    if (asurite.charAt(asurite.length()-1) == '\r')
+                        asurite = asurite.substring(0,asurite.length()-1);
 
-                roster[line-1] = new Student(ID, firstName, lastName, program, academicLevel, asurite);
+                    roster[line-1] = new Student(ID, firstName, lastName, program, academicLevel, asurite);
 
-                studentData[line][0] = ID;
-                studentData[line][1] = firstName;
-                studentData[line][2] = lastName;
-                studentData[line][3] = program;
-                studentData[line][4] = academicLevel;
-                studentData[line][5] = asurite;
+                    studentData[line][0] = ID;
+                    studentData[line][1] = firstName;
+                    studentData[line][2] = lastName;
+                    studentData[line][3] = program;
+                    studentData[line][4] = academicLevel;
+                    studentData[line][5] = asurite;
+                }
+
             }
 
         }
